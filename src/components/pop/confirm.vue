@@ -1,0 +1,84 @@
+<template lang="pug">
+	.confirm_Mask(v-if="show")
+		.confirm.animated.bounceInDown
+			h3.confirm_title {{title}}
+			.content
+				p {{msg}}
+			.btnBox
+				p
+					a.sure.btn(@click="clickDone") {{doneBtn}}
+					a.cancel.btn(@click="show = false") {{cancelBtn}}
+</template>
+
+<script>
+export default {
+	data(){
+		return {
+			show:false,
+			title:'是否确认操作？',
+			msg:'',
+			doneBtn:'确认',
+			cancelBtn:'取消'
+		}
+	},
+	methods:{
+		clickDone(){
+			this.cb && this.cb()
+			this.show = false
+		}
+	},
+	mounted(){
+		let that = this
+		$ev.$on('confirm',res=>{
+			Object.assign(that,res)
+		})
+	}
+}
+</script>
+
+<style lang="stylus">
+.confirm_Mask
+	width 100%
+	height 100%
+	position fixed
+	background rgba(0,0,0,.75)
+	top 0
+	left 0
+	p
+		margin 0
+	.confirm
+		min-width 200px
+		background #fff
+		position fixed
+		top 100px
+		left 50%
+		margin-left -100px
+		border-radius 10px
+		overflow hidden
+		h3
+			margin 0
+			text-align center
+			border 1px solid #e3e3e3
+			line-height 32px
+			font-size 18px
+			font-weight 600
+		.content
+			padding 0 20px 20px
+			height 100px
+			display flex
+			align-items center
+			justify-content center
+		.btnBox
+			margin 10px 0 20px
+			p
+				display flex
+				justify-content space-around
+			.btn
+				border 1px solid #e6e6e6
+				padding 5px 10px
+				cursor pointer
+				&.sure
+					color #fff
+					background rgb(58, 174, 200)
+
+</style>
