@@ -51,10 +51,19 @@ export default {
 			}else{
 				this.choose = num
 			}
+			this.getResult()
 		},
 		jumpTo(){
 			if(this.jumpNum > this._page) return
 			this.choose = +this.jumpNum
+			this.getResult()
+		}
+		getResult(){
+			let that = this
+			this.$emit('getPage',{
+				index:that.choose,
+				size:that.size
+			}) 
 		}
 	},
 	computed:{
