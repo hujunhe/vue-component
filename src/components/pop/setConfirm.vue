@@ -1,48 +1,62 @@
 <template lang="pug">
-	.confirm_Mask(v-if="show")
+	.setConfirm(v-if="showPop")
 		.confirm.animated.bounceInDown
 			h3.confirm_title {{title}}
 			.content
+				p {{showPop}}
 				slot
-					p {{msg}}
 			.btnBox
 				p
 					a.sure.btn(@click="clickDone") {{doneBtn}}
-					a.cancel.btn(@click="show = false") {{cancelBtn}}
+					a.cancel.btn(@click="showPop = false") {{cancelBtn}}
 </template>
 
 <script>
 export default {
+	props:{
+		show:{
+			type:Boolean,
+			default:false
+		},
+		title:{
+			type:String,
+			default:''
+		},
+		done:{
+			type:Function,
+			default(){
+				console.log('默认事件');
+			}
+		},
+		doneBtn:{
+			type:String,
+			default:'确认'
+		},
+		cancelBtn:{
+			type:String,
+			default:'取消'
+		}
+	},
 	data(){
 		return {
-			show:false,
-			title:'是否确认操作？',
-			msg:'',
-			doneBtn:'确认',
-			cancelBtn:'取消'
+			showPop:this.show
 		}
 	},
 	methods:{
 		clickDone(){
-			this.cb && this.cb()
-			this.show = false
+			this.done()
+			this.showPop = false
 		}
-	},
-	mounted(){
-		let that = this
-		$ev.$on('confirm',res=>{
-			Object.assign(that,res)
-		})
 	}
 }
 </script>
 
 <style lang="stylus">
-.confirm_Mask
+.setConfirm
 	width 100%
 	height 100%
 	position fixed
-	background rgba(0,0,0,.75)
+	background rgba(0,0,0,.1)
 	top 0
 	left 0
 	p
@@ -81,5 +95,4 @@ export default {
 				&.sure
 					color #fff
 					background rgb(58, 174, 200)
-
 </style>
